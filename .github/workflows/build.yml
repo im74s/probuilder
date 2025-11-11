@@ -32,6 +32,14 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
+    - name: Install Capacitor
+      run: |
+        npm install @capacitor/core @capacitor/cli @capacitor/android
+    
+    - name: Initialize Capacitor
+      run: |
+        npx cap init "neon-holo-pulse" "app.lovable.9ac1c0f2e7564b679b7d0224361d038a" --web-dir=dist
+    
     - name: Build web app
       run: npm run build
     
