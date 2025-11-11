@@ -8,6 +8,10 @@ interface NavLinkCompatProps extends Omit<NavLinkProps, "className"> {
   pendingClassName?: string;
 }
 
+/**
+ * A wrapper around react-router-dom's NavLink
+ * that supports activeClassName, pendingClassName, and custom className merging.
+ */
 const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
   ({ className, activeClassName, pendingClassName, to, ...props }, ref) => {
     return (
@@ -15,12 +19,16 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
         ref={ref}
         to={to}
         className={({ isActive, isPending }) =>
-          cn(className, isActive && activeClassName, isPending && pendingClassName)
+          cn(
+            className,
+            isActive ? activeClassName : undefined,
+            isPending ? pendingClassName : undefined
+          )
         }
         {...props}
       />
     );
-  },
+  }
 );
 
 NavLink.displayName = "NavLink";
