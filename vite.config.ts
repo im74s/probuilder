@@ -17,11 +17,6 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     target: 'es2015', // Better mobile browser compatibility
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production',
-      },
-    },
+    minify: 'esbuild', // Use esbuild instead of terser (faster!)
   },
 }));
