@@ -28,11 +28,18 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Clear npm cache
-      run: npm cache clean --force
+    - name: Delete package-lock and install fresh
+      run: |
+        rm -f package-lock.json
+        npm install
 
-    - name: Install dependencies
-      run: npm install --force
+    - name: Verify next-themes installation
+      run: |
+        if [ ! -d "node_modules/next-themes" ]; then
+          echo "next-themes not found, installing explicitly"
+          npm install next-themes
+        fi
+        ls -la node_modules/ | grep next-themes
 
     - name: Create .env file
       run: |
@@ -46,7 +53,7 @@ jobs:
         VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
     - name: Install Capacitor
-      run: npm install @capacitor/core @capacitor/cli @capacitor/android --force
+      run: npm install @capacitor/core @capacitor/cli @capacitor/android
 
     - name: Initialize Capacitor
       run: npx cap init "Pro Builder" "com.probuilder.main" --web-dir=dist
