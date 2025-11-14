@@ -149,8 +149,9 @@ const Chat = () => {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     setIsTyping(false);
 
+    // GET WELCOME MESSAGE FROM PROMPTS FILE
     const welcomePrompts = botPrompts.find(p => p.category === 'welcome');
-    const welcomeMsg = welcomePrompts?.questions[0] || "Hey! I'm your app builder 👋";
+    const welcomeMsg = welcomePrompts?.questions[Math.floor(Math.random() * welcomePrompts.questions.length)] || "Hey! I'm your app builder 👋";
 
     await supabase.from('messages').insert([{
       conversation_id: conversationId,
@@ -162,8 +163,9 @@ const Chat = () => {
     await new Promise((resolve) => setTimeout(resolve, 5000));
     setIsTyping(false);
 
+    // GET START MESSAGE FROM PROMPTS FILE
     const startPrompts = botPrompts.find(p => p.category === 'start');
-    const startMsg = startPrompts?.questions[0] || "Please start describing your app";
+    const startMsg = startPrompts?.questions[Math.floor(Math.random() * startPrompts.questions.length)] || "Tell me about the app you want to build";
 
     await supabase.from('messages').insert([{
       conversation_id: conversationId,
@@ -233,8 +235,11 @@ const Chat = () => {
           await new Promise((resolve) => setTimeout(resolve, 2000));
           setIsTyping(false);
 
+          // USE SMART PROMPT FROM FILE - NOT HARDCODED
           const smartPrompt = getSmartBotPrompt(messageText, newPercentage, messages);
 
+          console.log('Sending smart bot prompt:', smartPrompt);
+          
           await supabase.from('messages').insert([
             {
               conversation_id: conversation.id,
@@ -247,8 +252,9 @@ const Chat = () => {
           await new Promise((resolve) => setTimeout(resolve, 2000));
           setIsTyping(false);
 
+          // GET COMPLETION MESSAGE FROM PROMPTS FILE
           const completionPrompts = botPrompts.find(p => p.category === 'completion');
-          const completionMsg = completionPrompts?.questions[0] || "Perfect! I have all the information I need. Click 'Build Now' to start building your app!";
+          const completionMsg = completionPrompts?.questions[Math.floor(Math.random() * completionPrompts.questions.length)] || "Perfect! Click 'Build Now' to start!";
           
           await supabase.from('messages').insert([
             {
@@ -263,8 +269,9 @@ const Chat = () => {
         await new Promise((resolve) => setTimeout(resolve, 1500));
         setIsTyping(false);
 
+        // GET "NEED MORE DETAILS" MESSAGE FROM PROMPTS FILE
         const needMorePrompts = botPrompts.find(p => p.category === 'need_more_details');
-        const needMoreMsg = needMorePrompts?.questions[Math.floor(Math.random() * needMorePrompts.questions.length)] || "Please describe your app more deeply for better results.";
+        const needMoreMsg = needMorePrompts?.questions[Math.floor(Math.random() * needMorePrompts.questions.length)] || "Can you provide more details?";
         
         await supabase.from('messages').insert([
           {
